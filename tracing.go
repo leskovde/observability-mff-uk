@@ -15,7 +15,6 @@ func tracingMiddleware(next http.Handler) http.Handler {
 		propagatedCtx := otel.GetTextMapPropagator().Extract(r.Context(), propagation.HeaderCarrier(r.Header))
 		spanCtx, span := otel.Tracer(appName).Start(propagatedCtx, "tracingMiddleware")
 		tracingId := span.SpanContext().TraceID().String()
-		tracingId := "this-is-not-tracing-id-👎"
 		r.Header.Set(hdrTracingId, tracingId)
 		log := requestLog("tracingMiddleware", r)
 		log.Debug("starting tracing...")
